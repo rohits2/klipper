@@ -50,10 +50,8 @@ class Heater:
         self.control = algo(self, config)
         # Setup output heater pin
         heater_pin = config.get('heater_pin')
-        cool_mode_pin = config.get('cool_mode_pin', None)
         ppins = self.printer.lookup_object('pins')
         self.mcu_pwm = ppins.setup_pin('pwm', heater_pin)
-        self.cool_mode = ppins.setup_pin('digital_out', cool_mode_pin)
 
         pwm_cycle_time = config.getfloat('pwm_cycle_time', 0.100, above=0.,
                                          maxval=self.pwm_delay)
@@ -362,8 +360,7 @@ class PrinterHeaters:
         # Setup sensor
         sensor = self.setup_sensor(config)
         # Create heater
-        logging.info("CONFIG cool_mode_pin", config.get("cool_mode_pin", None))
-        if config.get("cool_mode_pin", None):
+        if config.get("cool_mode_pin", False):
             self.heaters[heater_name] = heater = HeatPump(config, sensor)
         else:
             self.heaters[heater_name] = heater = Heater(config, sensor)
