@@ -362,6 +362,7 @@ class PrinterHeaters:
         # Setup sensor
         sensor = self.setup_sensor(config)
         # Create heater
+        logging.info("CONFIG cool_mode_pin", config.get("cool_mode_pin", None))
         if config.get("cool_mode_pin", None):
             self.heaters[heater_name] = heater = HeatPump(config, sensor)
         else:
